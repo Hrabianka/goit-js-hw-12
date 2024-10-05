@@ -12,8 +12,9 @@ const lightbox = new SimpleLightbox('.gallery-link', {
 
 const loader = document.querySelector('.loader');
 const submitForm = document.querySelector('.form');
-const gallery = document.querySelector('.image-gallery');
+
 const loadMore = document.querySelector('.load-more');
+const gallery = document.querySelector('.image-gallery');
 
 submitForm.addEventListener('submit', handleSubmit);
 loadMore.addEventListener('click', handleLoadMore);
@@ -23,8 +24,7 @@ let totalItems;
 let totalPages;
 let searchResult = '';
 
-function handleSubmit(event) {
-  
+async function handleSubmit(event) {
   event.preventDefault();
   page = 1;
   gallery.innerHTML = '';
@@ -36,13 +36,13 @@ function handleSubmit(event) {
     totalItems = response.totalHits;
     totalPages = totalItems / per_page;
     loader.style.display = 'none';
- 
+
     if (response.hits.length > 0) {
       gallery.insertAdjacentHTML('beforeend', renderImages(response));
       if (totalPages <= page) {
         loadMore.style.display = 'none';
         iziToast.show({
-          message: `❌ Sorry, there are no images matching your search query. Please try again!`,
+          message: ` Sorry, there are no images matching your search query. Please try again!`,
           position: 'topRight',
           backgroundColor: '#2596BE',
           messageColor: '#fff',
@@ -54,17 +54,16 @@ function handleSubmit(event) {
     } else {
       loadMore.style.display = 'none';
       iziToast.show({
-        message: `❌ Sorry, there are no images matching your search query.`,
+        message: ` Sorry, there are no images matching your search query.`,
         position: 'topRight',
         backgroundColor: '#F44336',
         messageColor: '#fff',
       });
     }
-  }
-  catch (error) {
+  } catch (error) {
     loader.style.display = 'none';
     iziToast.show({
-      message: `❌ ERROR: ${error.message}`,
+      message: ` ERROR: ${error.message}`,
       position: 'topRight',
       backgroundColor: '#F44336',
       messageColor: '#fff',
@@ -96,7 +95,7 @@ async function handleLoadMore() {
     }
   } catch (error) {
     iziToast.show({
-      message: `${error.message}`,
+      message: `ERROR: ${error.message}`,
       position: 'topRight',
       backgroundColor: '#2596BE',
       messageColor: '#fff',
